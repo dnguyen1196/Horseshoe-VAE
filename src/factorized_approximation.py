@@ -3,6 +3,8 @@
 	q = N(w_ijl | m_ijl, sigma^2_ijl) N(ln \tau_kl | params) IGamma(\lambda_kl| params)
 	IGamma(\tau_l | params) IGamma(\lambda_l| params)
 """
+
+
 import autograd.numpy as np
 import autograd.numpy.random as npr
 from autograd.scipy.misc import logsumexp

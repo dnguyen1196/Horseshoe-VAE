@@ -1,0 +1,4 @@
+/path/to/result/folder/
+HS
+32 32
+16
