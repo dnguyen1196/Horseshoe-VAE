@@ -1,4 +1,5 @@
-/path/to/result/folder/
-HS
+/cluster/home/mnguye16/Research/Horseshoe-VAE/Results/Standard/
+S
 32 32
 16
+synthetic
