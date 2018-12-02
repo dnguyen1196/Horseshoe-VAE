@@ -2,6 +2,7 @@ import argparse
 from hs_vae.autoencoder import *
 from hs_vae.horseshoe_autoencoder import *
 import pickle
+import numpy
 
 parser = argparse.ArgumentParser(description="Testing VAE")
 
@@ -21,12 +22,12 @@ data  = args.data
 if data == "synthetic":
     # Do synthetic data testing
     f = 0 # Number of fake dims
-    num_nodes = 100
-    total_dim = 15
+    num_nodes = 1000
+    total_dim = 150
     observed_dim = total_dim - f
-    true_dim = 3
+    true_dim = 50
     num_fake_dim = f
-    hidden_layer_sizes = [32]
+    hidden_layer_sizes = nns
 
     sparsity = 0.25
     # NOTE that there exists the 'interchangeability problem'
@@ -37,14 +38,14 @@ if data == "synthetic":
 
     if vae == "L" or vae == "S":
         l = 1e-3 if vae == "L" else 0 # Regularization term
-        vae_model = VariationalAutoencoder(n_dims_code=5, \
+        vae_model = VariationalAutoencoder(n_dims_code=ncode, \
                                            n_dims_data=observed_dim + num_fake_dim, \
                                            hidden_layer_sizes=hidden_layer_sizes, \
                                            reg_lambda=l)
 
     else:
         vae_model = HS_VAE(q_sigma=0.25,
-                n_dims_code=5,
+                n_dims_code=ncode,
                 n_dims_data=total_dim,
                 hidden_layer_sizes=hidden_layer_sizes,
                 classification=True,
