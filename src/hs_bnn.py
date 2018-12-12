@@ -2,7 +2,7 @@ from copy import copy
 
 import autograd.numpy as np
 from autograd import grad
-from src.optimizers import adam
+from src.optimizers import adam, rmsprop, adagrad
 from src.utility_functions import make_batches
 
 
@@ -104,8 +104,16 @@ def fit(model, n_epochs=10, l_rate=0.01):
         model.polyak_params = copy(init_var_params)
     gradient = grad(model.variational_objective, 0)
     num_iters = n_epochs * model.M  # one iteration = one set of param updates
-    model.variational_params = adam(gradient, init_var_params,
-                                    step_size=l_rate, num_iters=num_iters, callback=callback,
+    # model.variational_params = adam(gradient, init_var_params,
+    #                                 step_size=l_rate, num_iters=num_iters, callback=callback,
+    #                                 polyak=model.polyak)
+
+    model.variational_params = rmsprop(gradient, init_var_params,
+                                    step_size=0.1, num_iters=num_iters, callback=callback,
                                     polyak=model.polyak)
+
+    # model.variational_params = adagrad(gradient, init_var_params,
+    #                                 step_size=0.1, num_iters=num_iters, callback=callback,
+    #                                 polyak=model.polyak)
     return model
 

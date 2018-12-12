@@ -1,6 +1,5 @@
 import autograd.numpy as np
 from autograd.scipy.special import gammaln, psi
-import seaborn as sb
 import matplotlib.pyplot as plt
 
 

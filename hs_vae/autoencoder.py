@@ -222,17 +222,17 @@ class VariationalAutoencoder(nn.Module):
 
         # Generate samples from N(mx_NC, q_sigma) to compute the following
         # E_q[log p(x_ND|mx_NC)]
-        for ss in range(n_mc_samples):
-            sample_z_NC = self.draw_sample_from_q(mx_NC)
-            sample_xproba_ND = self.decode(sample_z_NC)
-
-            # Use MSE to measure reconstruction loss
-            # Since MSE is equivalent to log gaussian loss
-            sample_mse_loss = F.mse_loss(sample_xproba_ND, xs_ND)
-
-            # KL divergence from q(mu, sigma) to prior (std normal)
-            # Have to multiply (1 - epsilon) to make sure all entries are < 1
-            neg_expected_ll += 1 / n_mc_samples * sample_mse_loss
+        # for ss in range(n_mc_samples):
+        #     sample_z_NC = self.draw_sample_from_q(mx_NC)
+        #     sample_xproba_ND = self.decode(sample_z_NC)
+        #
+        #     # Use MSE to measure reconstruction loss
+        #     # Since MSE is equivalent to log gaussian loss
+        #     sample_mse_loss = F.mse_loss(sample_xproba_ND, xs_ND)
+        #
+        #     # KL divergence from q(mu, sigma) to prior (std normal)
+        #     # Have to multiply (1 - epsilon) to make sure all entries are < 1
+        #     neg_expected_ll += 1 / n_mc_samples * sample_mse_loss
 
         # Compute the loss from adjacency matrix reconstruction
         # Get number of entries
@@ -264,11 +264,12 @@ class VariationalAutoencoder(nn.Module):
         # L1 regularizer term
         reg_loss = self.lam * (self.encoder.regularize() + self.decoder.regularize())
 
-        return neg_expected_ll, kl, reg_loss, matrix_reconstruction_loss, sample_xproba_ND
+        return neg_expected_ll, kl, reg_loss, matrix_reconstruction_loss
 
     def fit(self, feature_vectors, train_adjacency_matrix, n_epochs=10, test_adjacency_matrix=None, num_negatives=16):
         # Initialize optimizer
-        optimizer = torch.optim.SGD(self.parameters(), lr=0.01)
+        # optimizer = torch.optim.SGD(self.parameters(), lr=0.01)
+        optimizer = torch.optim.Adagrad(self.parameters(), lr=1)
         num_nodes = feature_vectors.shape[0]
         self.num_negatives = num_negatives
 
@@ -296,7 +297,7 @@ class VariationalAutoencoder(nn.Module):
                 # expected_ll refers to the expected log likelihood term of ELBO
                 # kl refers to the KL divergence term of the ELBO
                 # matrix_loss refers to the matrix reconstruction loss
-                neg_expected_ll, KL, reg, matrix_loss, _ = self.calc_vi_loss(x_ND, ys_ND, vals, n_mc_samples=10)
+                neg_expected_ll, KL, reg, matrix_loss = self.calc_vi_loss(x_ND, ys_ND, vals, n_mc_samples=10)
 
                 KL = 1 / len(vals) * KL
                 # TODO: scale the KL term
