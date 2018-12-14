@@ -519,13 +519,13 @@ class HS_VAE(VAE):
         gradient = grad(self.calc_vi_loss, 0)
         num_iters = n_epochs * self.M  # one iteration = one set of param updates
 
-        # Run the algorithm using Adam with callback
+        # # Run the algorithm using Adam with callback
         # self.variational_params = adam(gradient, init_var_params,
-        #                                step_size=l_rate, num_iters=num_iters, callback=callback,
+        #                                step_size=0.01, num_iters=num_iters, callback=callback,
         #                                polyak=self.polyak)
 
         self.variational_params = rmsprop(gradient, init_var_params,
-                                           step_size=0.01, gamma=0.1, num_iters=num_iters, callback=callback,
+                                           step_size=0.1, gamma=0.99, num_iters=num_iters, callback=callback,
                                            polyak=self.polyak)
 
         # self.variational_params = adagrad(gradient, init_var_params,
