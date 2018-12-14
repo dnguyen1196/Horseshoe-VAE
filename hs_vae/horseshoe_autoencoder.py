@@ -520,9 +520,17 @@ class HS_VAE(VAE):
         num_iters = n_epochs * self.M  # one iteration = one set of param updates
 
         # Run the algorithm using Adam with callback
-        self.variational_params = adam(gradient, init_var_params,
-                                       step_size=l_rate, num_iters=num_iters, callback=callback,
-                                       polyak=self.polyak)
+        # self.variational_params = adam(gradient, init_var_params,
+        #                                step_size=l_rate, num_iters=num_iters, callback=callback,
+        #                                polyak=self.polyak)
+
+        self.variational_params = rmsprop(gradient, init_var_params,
+                                           step_size=0.01, gamma=0.1, num_iters=num_iters, callback=callback,
+                                           polyak=self.polyak)
+
+        # self.variational_params = adagrad(gradient, init_var_params,
+        #                                 step_size=0.0001, num_iters=num_iters, callback=callback,
+        #                                 polyak=self.polyak)
 
     def compute_accuracy(self, params, test=True):
         W_vect, sigma, tau_mu, tau_sigma, tau_mu_global, tau_sigma_global, tau_mu_oplayer, tau_sigma_oplayer = \

@@ -31,7 +31,7 @@ def rmsprop(grad, x, callback=None, num_iters=100,
 def adagrad(grad, x, callback=None, num_iters=100,
             step_size=0.1, eps=10**-8, polyak=False):
     """Root mean squared prop: See Adagrad paper for details."""
-    avg_sq_grad = np.ones(len(x))
+    avg_sq_grad = np.ones(len(x)) #* 0.0001
     for i in range(num_iters):
         g = grad(x, i)
         if callback: callback(x, i, g, polyak)
