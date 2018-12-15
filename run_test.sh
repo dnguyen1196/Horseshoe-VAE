@@ -15,7 +15,7 @@ module load anaconda/3 glibc/2.14
 # So it understands these command line arguments. This can be done using
 # ArgumentParser
 
-opts="-p gpu -c 1 --mem=8g --time=1-00:00:00 --mail-type=ALL --mail-user=$USER"
+opts="-p gpu -c 1 --mem=8g --time=2-00:00:00 --mail-type=ALL --mail-user=$USER"
 
 read outdir # outdirectory
 read vae_type # Type of VAE
