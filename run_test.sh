@@ -37,6 +37,3 @@ outs="--output=$outdir$vae_type-$nnsfile-$ncode.out --error=$outdir$vae_type-$nn
 # Note that change from sbatch to srun
 sbatch $opts $outs --wrap="$python_interpreter -u test_vae.py --vae $vae_type --nns $nns --ncode $ncode --data $data"
 
-
-source deactivate
-
