@@ -22,7 +22,7 @@ data  = args.data
 if data == "synthetic":
     # Do synthetic data testing
     f = 0 # Number of fake dims
-    num_nodes = 1000
+    num_nodes = 100
     total_dim = 30
     observed_dim = total_dim - f
     true_dim = 20

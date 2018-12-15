@@ -1,5 +1,5 @@
-/cluster/home/mnguye16/Research/Horseshoe-VAE/Results/Standard/
-S
+/cluster/tufts/class/comp/150/mnguye16/Horseshoe-VAE/Results/Synthetic/
+L
 32 32
-16
+20
 synthetic
