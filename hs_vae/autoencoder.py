@@ -269,7 +269,7 @@ class VariationalAutoencoder(nn.Module):
     def fit(self, feature_vectors, train_adjacency_matrix, n_epochs=10, test_adjacency_matrix=None, num_negatives=16):
         # Initialize optimizer
         # optimizer = torch.optim.SGD(self.parameters(), lr=0.01)
-        optimizer = torch.optim.Adagrad(self.parameters(), lr=1)
+        optimizer = torch.optim.Adagrad(self.parameters(), lr=0.1)
         num_nodes = feature_vectors.shape[0]
         self.num_negatives = num_negatives
 

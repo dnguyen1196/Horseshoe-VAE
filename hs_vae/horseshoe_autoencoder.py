@@ -524,13 +524,13 @@ class HS_VAE(VAE):
         #                                step_size=0.01, num_iters=num_iters, callback=callback,
         #                                polyak=self.polyak)
 
-        self.variational_params = rmsprop(gradient, init_var_params,
-                                           step_size=0.1, gamma=0.99, num_iters=num_iters, callback=callback,
-                                           polyak=self.polyak)
+        # self.variational_params = rmsprop(gradient, init_var_params,
+        #                                    step_size=0.001, gamma=0.9, num_iters=num_iters, callback=callback,
+        #                                    polyak=self.polyak)
 
-        # self.variational_params = adagrad(gradient, init_var_params,
-        #                                 step_size=0.0001, num_iters=num_iters, callback=callback,
-        #                                 polyak=self.polyak)
+        self.variational_params = adagrad(gradient, init_var_params,
+                                        step_size=0.0001, num_iters=num_iters, callback=callback,
+                                        polyak=self.polyak)
 
     def compute_accuracy(self, params, test=True):
         W_vect, sigma, tau_mu, tau_sigma, tau_mu_global, tau_sigma_global, tau_mu_oplayer, tau_sigma_oplayer = \

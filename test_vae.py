@@ -28,6 +28,7 @@ if data == "synthetic":
     true_dim = 20
     num_fake_dim = f
     hidden_layer_sizes = nns
+    n_epochs = 0
 
     sparsity = 0.25
     # NOTE that there exists the 'interchangeability problem'
@@ -54,7 +55,22 @@ if data == "synthetic":
                 warm_up=False,
                 polyak=False)
 
-    vae_model.fit(feature_vectors, train_adjacency_matrix, n_epochs=151, test_adjacency_matrix=test_adjacency_matrix)
+    vae_model.fit(feature_vectors, train_adjacency_matrix, n_epochs=n_epochs, test_adjacency_matrix=test_adjacency_matrix)
+
+    # Pickle the model after training to plot weights
+    if vae == "HS":
+        param_file = "HS-param-synthetic.pkl"
+        invgamma_file = "HS-horseshoe.pkl"
+        with open(param_file, "wb") as f:
+            pickle.dump(vae_model.optimal_elbo_params, f)
+            f.close()
+        with open(invgamma_file, "wb") as f:
+            pickle.dump(vae_model.horseshoe_encoder, f)
+            f.close()
+
+    else: # Need to pickle the params because cannot pickle lambdas
+        with open("{}-synthetic.pkl".format(vae), "wb") as f:
+            pickle.dump(vae_model.encoder.params, f)
 
 
 else: # Do Kegg Data testing
