@@ -257,7 +257,7 @@ class VariationalAutoencoder(nn.Module):
         # This will need to change for other types of adjacency matrix value
         # Use the binary prediction loss with logits
         matrix_reconstruction_loss = \
-            F.binary_cross_entropy(f_predict, Variable(torch.FloatTensor(vals)), reduction='sum')
+            F.binary_cross_entropy(f_predict, Variable(torch.FloatTensor(vals)))
 
         neg_expected_ll += matrix_reconstruction_loss
 
