@@ -20,6 +20,16 @@ sb.set_context("paper", rc={"lines.linewidth": 5, "lines.markersize":10, 'axes.l
     'axes.labelsize' : 25,  })
 sb.set_style("darkgrid")
 
+def visualize(wstack):
+    w_mean = [np.average(np.abs(wstack[i])) for i in range(len(wstack))]
+    w_std = [np.std(np.abs(wstack[i])) for i in range(len(wstack))]
+
+    plt.errorbar(range(len(w_mean)), w_mean, w_std, linestyle='None', marker='^')
+    locator = matplotlib.ticker.MultipleLocator(2)
+    plt.gca().xaxis.set_major_locator(locator)
+    formatter = matplotlib.ticker.StrMethodFormatter("{x:.0f}")
+    plt.gca().xaxis.set_major_formatter(formatter)
+    plt.show()
 
 def plot_singlelayer_weights(horseshoe_encoder, optimal_elbo_params):
     plt.figure()
@@ -42,24 +52,13 @@ def plot_singlelayer_weights(horseshoe_encoder, optimal_elbo_params):
 
         wstack = np.vstack([w]) * np.exp(scale_mu - np.sqrt(scale_v))
 
-        w_mean = [np.average(np.abs(wstack[i])) for i in range(len(wstack))]
-        w_std = [np.std(np.abs(wstack[i])) for i in range(len(wstack))]
-
-        plt.errorbar(range(15), w_mean, w_std, linestyle='None', marker='^')
-        locator = matplotlib.ticker.MultipleLocator(2)
-        plt.gca().xaxis.set_major_locator(locator)
-        formatter = matplotlib.ticker.StrMethodFormatter("{x:.0f}")
-        plt.gca().xaxis.set_major_formatter(formatter)
-        plt.show()
+        visualize(wstack)
 
         print("Feature index sorted by weight magnitude in increasing order")
         idx = np.argsort(np.linalg.norm(wstack.T, axis=0))
         print(idx)
 
-        sb.boxplot(data=wstack, orient="h", ax=axx)
-
         return wstack
-
 
 # Note the model type
 model_type = "HS"
@@ -80,4 +79,6 @@ else:
     with open(param_file, "rb") as f:
         params = pickle.load(f)
         inputlayer = params[0].weight
-        print(inputlayer)
+        wstack = inputlayer.detach().numpy().T
+
+    visualize(wstack)
