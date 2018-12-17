@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 import seaborn as sb
 import argparse
 from sklearn.externals import joblib
@@ -39,18 +40,24 @@ def plot_singlelayer_weights(horseshoe_encoder, optimal_elbo_params):
         scale_v = 0.25 * (tau_sigma ** 2 + tau_sigma_global[layer_id] ** 2)
         w, b = mu
 
-        wstack = np.vstack([w, b]) * np.exp(scale_mu - np.sqrt(scale_v))
-        wstack = wstack.T
+        wstack = np.vstack([w]) * np.exp(scale_mu - np.sqrt(scale_v))
 
-        # idx = np.argsort(np.linalg.norm(wstack, axis=0))
-        # if idx.shape[0] > 20:
-        #     sb.boxplot(data=wstack[:, idx[-20:]], orient="h", ax=axx)
-        # else:
-        #     sb.boxplot(data=wstack[:, idx], orient="h", ax=axx)
+        w_mean = [np.average(np.abs(wstack[i])) for i in range(len(wstack))]
+        w_std = [np.std(np.abs(wstack[i])) for i in range(len(wstack))]
+
+        plt.errorbar(range(15), w_mean, w_std, linestyle='None', marker='^')
+        locator = matplotlib.ticker.MultipleLocator(2)
+        plt.gca().xaxis.set_major_locator(locator)
+        formatter = matplotlib.ticker.StrMethodFormatter("{x:.0f}")
+        plt.gca().xaxis.set_major_formatter(formatter)
+        plt.show()
+
+        print("Feature index sorted by weight magnitude in increasing order")
+        idx = np.argsort(np.linalg.norm(wstack.T, axis=0))
+        print(idx)
 
         sb.boxplot(data=wstack, orient="h", ax=axx)
 
-        plt.show(block=True)
         return wstack
 
 

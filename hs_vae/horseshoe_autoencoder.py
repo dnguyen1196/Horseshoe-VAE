@@ -529,7 +529,7 @@ class HS_VAE(VAE):
         #                                    polyak=self.polyak)
 
         self.variational_params = adagrad(gradient, init_var_params,
-                                        step_size=0.01, num_iters=num_iters, callback=callback,
+                                        step_size=0.1, num_iters=num_iters, callback=callback,
                                         polyak=self.polyak)
 
     def compute_accuracy(self, params, test=True):

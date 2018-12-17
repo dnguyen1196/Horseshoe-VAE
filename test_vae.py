@@ -22,13 +22,13 @@ data  = args.data
 if data == "synthetic":
     # Do synthetic data testing
     f = 5 # Number of fake dims
-    num_nodes = 100
+    num_nodes = 250
     total_dim = 15
     observed_dim = total_dim - f
     true_dim = 3
     num_fake_dim = f
     hidden_layer_sizes = nns
-    n_epochs = 101
+    n_epochs = 51
 
     sparsity = 0.25
     # NOTE that there exists the 'interchangeability problem'
