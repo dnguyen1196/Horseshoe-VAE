@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sb
 import argparse
 from sklearn.externals import joblib
+from statistics import mean
 import pickle
 from hs_vae.autoencoder import *
 from hs_vae.horseshoe_autoencoder import *
@@ -39,6 +40,7 @@ def plot_singlelayer_weights(horseshoe_encoder, optimal_elbo_params):
         w, b = mu
 
         wstack = np.vstack([w, b]) * np.exp(scale_mu - np.sqrt(scale_v))
+        wstack = wstack.T
 
         # idx = np.argsort(np.linalg.norm(wstack, axis=0))
         # if idx.shape[0] > 20:
@@ -53,7 +55,7 @@ def plot_singlelayer_weights(horseshoe_encoder, optimal_elbo_params):
 
 
 # Note the model type
-model_type = "S"
+model_type = "HS"
 
 
 if model_type == "HS":
@@ -61,7 +63,7 @@ if model_type == "HS":
     invgamma_file = "HS-horseshoe.pkl"
 
     with open(param_file, "rb") as f1:
-        elbo_param= pickle.load(f1)
+        elbo_param = pickle.load(f1)
     with open(invgamma_file, "rb") as f:
         invgamma = pickle.load(f)
     plot_singlelayer_weights(invgamma, elbo_param)

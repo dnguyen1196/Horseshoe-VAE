@@ -88,7 +88,7 @@ def create_observed_features(latent_vectors, num_nodes, true_dim, observed_dim, 
     augmented_feature_matrix = np.hstack((transformed_feature, noise_feature_matrix))
 
     # Permute the features column
-    augmented_feature_matrix = augmented_feature_matrix[:, np.random.permutation(augmented_dim)]
+    # augmented_feature_matrix = augmented_feature_matrix[:, np.random.permutation(augmented_dim)]
     return augmented_feature_matrix
 
 
