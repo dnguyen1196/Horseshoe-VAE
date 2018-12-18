@@ -29,6 +29,7 @@ def visualize(wstack):
     plt.gca().xaxis.set_major_locator(locator)
     formatter = matplotlib.ticker.StrMethodFormatter("{x:.0f}")
     plt.gca().xaxis.set_major_formatter(formatter)
+    plt.title("Entry-wise values of input layer weights for Standard-VAE")
     plt.show()
 
 def plot_singlelayer_weights(horseshoe_encoder, optimal_elbo_params):
@@ -61,7 +62,7 @@ def plot_singlelayer_weights(horseshoe_encoder, optimal_elbo_params):
         return wstack
 
 # Note the model type
-model_type = "HS"
+model_type = "S"
 
 
 if model_type == "HS":

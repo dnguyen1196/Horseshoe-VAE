@@ -22,13 +22,14 @@ data  = args.data
 if data == "synthetic":
     # Do synthetic data testing
     f = 5 # Number of fake dims
-    num_nodes = 250
-    total_dim = 15
+    num_nodes = 1000
+    total_dim = 25
     observed_dim = total_dim - f
-    true_dim = 3
+    true_dim = 10
     num_fake_dim = f
     hidden_layer_sizes = nns
-    n_epochs = 51
+
+    n_epochs = 151 if vae != "HS" else 16
 
     sparsity = 0.25
     # NOTE that there exists the 'interchangeability problem'
@@ -55,7 +56,7 @@ if data == "synthetic":
                 warm_up=False,
                 polyak=False)
 
-    vae_model.fit(feature_vectors, train_adjacency_matrix, n_epochs=n_epochs, test_adjacency_matrix=test_adjacency_matrix)
+    vae_model.fit(feature_vectors, train_adjacency_matrix, n_epochs=n_epochs, test_adjacency_matrix=test_adjacency_matrix, num_negatives=0)
 
     # Pickle the model after training to plot weights
     if vae == "HS":
@@ -184,4 +185,4 @@ else: # Do Kegg Data testing
             polyak=False)
 
         num_negatives = 16
-        vae_model.fit(feature_vectors_kegg, train_adjacency_matrix_kegg, n_epochs=500, test_adjacency_matrix=test_adjacency_matrix_kegg, num_negatives=num_negatives)
+        vae_model.fit(feature_vectors_kegg, train_adjacency_matrix_kegg, n_epochs=16, test_adjacency_matrix=test_adjacency_matrix_kegg, num_negatives=num_negatives)

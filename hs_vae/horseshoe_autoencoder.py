@@ -416,7 +416,7 @@ class HS_VAE(VAE):
 
             # inner_prod.shape = (N,)
             inner_prod = ag_np.sum(sample_xz_NC * sample_yz_NC, axis=1)
-            f_predict += 1 / n_mc_samples * sigmoid(inner_prod)
+            f_predict  = f_predict + 1 / n_mc_samples * sigmoid(inner_prod)
 
         matrix_reconstruction_loss = bce_loss(matrix_entries, f_predict)
         log_lik_matrix_reconstruction = -matrix_reconstruction_loss
@@ -529,7 +529,7 @@ class HS_VAE(VAE):
         #                                    polyak=self.polyak)
 
         self.variational_params = adagrad(gradient, init_var_params,
-                                        step_size=0.1, num_iters=num_iters, callback=callback,
+                                        step_size=1, num_iters=num_iters, callback=callback,
                                         polyak=self.polyak)
 
     def compute_accuracy(self, params, test=True):
